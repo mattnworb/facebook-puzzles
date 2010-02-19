@@ -33,7 +33,7 @@
 	
 	<target name="package" depends="build">
 		<tar compression="gzip" destfile="${ant.project.name}.tar.gz">
-			<tarfileset dir="${basedir}" includes="liarliar.sh,build.xml" filemode="755"/>
+			<tarfileset dir="${basedir}" includes="liarliar,build.xml" filemode="755"/>
 			<tarfileset dir="src" prefix="src" />
 		</tar>
 			
