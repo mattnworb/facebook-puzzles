@@ -14,8 +14,6 @@ public class Accuser {
 
 	private List<Accuser> accused;
 
-	private boolean tellingTruth;
-
 	public Accuser(String name) {
 		this.name = name;
 		this.accused = new ArrayList<Accuser>();
@@ -32,22 +30,6 @@ public class Accuser {
 	public List<Accuser> getAccused() {
 		return Collections.unmodifiableList(accused);
 	}
-
-	/**
-	 * @param tellingTruth
-	 *            the tellingTruth to set
-	 */
-	public void setTellingTruth(boolean tellingTruth) {
-		this.tellingTruth = tellingTruth;
-	}
-
-	/**
-	 * @return the tellingTruth
-	 */
-	public boolean isTellingTruth() {
-		return tellingTruth;
-	}
-
 
 	@Override
 	public int hashCode() {
@@ -72,8 +54,15 @@ public class Accuser {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Accuser [name=").append(name).append("]");
-		return builder.toString();
+		StringBuilder sb = new StringBuilder("[");
+		if (!accused.isEmpty()) {
+			for (Accuser obj : accused) {
+				sb.append(obj.name).append(",");
+			}
+			sb.delete(sb.length() - 1, sb.length());
+		}
+		sb.append("]");
+
+		return "[name=" + name + ",accused=" + sb.toString() + "]";
 	}
 }
