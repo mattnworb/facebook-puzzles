@@ -20,18 +20,25 @@ public class Main {
 		}
 
 		String filename = args[0];
-		try {
-			AccuserInputParser parser = new AccuserInputParser();
-			LiarDetector detector = new LiarDetectorImpl();
 
-			Collection<Accuser> col = parser.parseFile(new File(filename));
-			LiarDetector.Response response = detector.detect(col);
+		Main main = new Main();
+		try {
+			LiarDetector.Response response = main.execute(filename);
 
 			System.out.println(response.getLarger() + " " + response.getSmaller());
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public LiarDetector.Response execute(String filename) throws IOException {
+		AccuserInputParser parser = new AccuserInputParser();
+		LiarDetector detector = new LiarDetectorImpl();
+
+		Collection<Accuser> col = parser.parseFile(new File(filename));
+		LiarDetector.Response response = detector.detect(col);
+		return response;
 	}
 
 }
