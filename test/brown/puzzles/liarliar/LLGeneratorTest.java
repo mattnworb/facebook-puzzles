@@ -1,5 +1,6 @@
 package brown.puzzles.liarliar;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import org.junit.Test;
@@ -14,17 +15,18 @@ public class LLGeneratorTest {
 
 	@Test
 	public void lltfile() throws Exception {
-		runTest("llt.txt");
+		runTest("samples/llt.txt", 40);
 	}
 
 	@Test
 	public void lltenfile() throws Exception {
-		runTest("llten.txt");
+		runTest("samples/llten.txt", 10);
 	}
 
-	private void runTest(String filename) throws IOException {
+	private void runTest(String filename, int size) throws IOException {
 		Main main = new Main();
 		Response resp = main.execute(filename);
 		assertNotNull(resp);
+		assertEquals(size, resp.getLarger() + resp.getSmaller());
 	}
 }
