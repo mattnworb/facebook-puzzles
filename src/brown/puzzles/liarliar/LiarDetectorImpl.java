@@ -37,7 +37,6 @@ public class LiarDetectorImpl implements LiarDetector {
 				if (countMap.containsKey(accused)) {
 					count = countMap.get(accused).intValue();
 				}
-				log(accused + " accused " + count + " times");
 				countMap.put(accused, count + 1);
 			}
 		}
@@ -66,6 +65,17 @@ public class LiarDetectorImpl implements LiarDetector {
 		while (!group.isEmpty()) {
 
 			log("loop iteration, group size [" + group.size() + "]");
+
+			if (honestQueue.isEmpty() && liarsQueue.isEmpty()) {
+				log("stuck!");
+				log("original: " + accusers);
+				log("roots: " + roots);
+				log("honest: " + honest);
+				log("liars: " + liars);
+				log("group: " + group);
+
+				return null;
+			}
 
 			// examine honest queue, then liar queue
 			while (!honestQueue.isEmpty()) {
