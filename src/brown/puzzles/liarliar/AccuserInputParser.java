@@ -49,8 +49,10 @@ public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 			final String name = sc.next();
 			final int accusations = sc.nextInt();
 
-			Accuser acc = new Accuser(name);
-			map.put(name, acc);
+			if (!map.containsKey(name)) {
+				map.put(name, new Accuser(name));
+			}
+			Accuser acc = map.get(name);
 
 			for (int j = 0; j < accusations; j++) {
 				String newAccusedName = sc.next();
