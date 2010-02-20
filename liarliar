@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #ant -q build
-java -cp build brown.puzzles.liarliar.Main $1
+java -Xmx1024M -cp build brown.puzzles.liarliar.Main $*
