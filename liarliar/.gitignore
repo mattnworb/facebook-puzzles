@@ -1,6 +1,3 @@
 .bin
-.classpath
-.project
-.settings
 build
 *.tar.gz
