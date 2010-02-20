@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+@SuppressWarnings("boxing")
 class LLGenerator {
 
 	static void usage() {
