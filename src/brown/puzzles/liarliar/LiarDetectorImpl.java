@@ -24,36 +24,17 @@ public class LiarDetectorImpl implements LiarDetector {
 		Set<Accuser> group = new HashSet<Accuser>(accusers);
 
 		// count number of accusations against each member
-		Map<Accuser, Integer> countMap = new HashMap<Accuser, Integer>(group.size());
-
-		// TODO avoid nested loop
-		for (Accuser accuser : group) {
-			if (!countMap.containsKey(accuser)) {
-				countMap.put(accuser, 0);
-			}
-
-			for (Accuser accused : accuser.getAccused()) {
-				int count = 0;
-				if (countMap.containsKey(accused)) {
-					count = countMap.get(accused).intValue();
-				}
-				countMap.put(accused, count + 1);
-			}
-		}
+		Map<Accuser, Integer> countMap = countEntries(group);
 
 		log("count table: " + countMap);
 
-		Set<Accuser> honest = new HashSet<Accuser>();
-		Set<Accuser> liars = new HashSet<Accuser>();
 
 		// find anyone with no accusations against him/her
-		// this scans the map - bad
-		List<Accuser> roots = new ArrayList<Accuser>();
-		for (Map.Entry<Accuser, Integer> entry : countMap.entrySet()) {
-			if (entry.getValue().intValue() == 0) {
-				roots.add(entry.getKey());
-			}
-		}
+		List<Accuser> roots = findRoots(countMap);
+		log("roots: " + roots);
+
+		Set<Accuser> honest = new HashSet<Accuser>();
+		Set<Accuser> liars = new HashSet<Accuser>();
 
 		List<Accuser> honestQueue = new ArrayList<Accuser>();
 		List<Accuser> liarsQueue = new ArrayList<Accuser>();
@@ -78,26 +59,58 @@ public class LiarDetectorImpl implements LiarDetector {
 			}
 
 			// examine honest queue, then liar queue
-			while (!honestQueue.isEmpty()) {
-				Accuser next = honestQueue.remove(0);
-				log("popped " + next + " from honestQueue");
-
-				liarsQueue.addAll(next.getAccused());
-				liars.addAll(next.getAccused());
-				group.remove(next);
-			}
-
-			while (!liarsQueue.isEmpty()) {
-				Accuser next = liarsQueue.remove(0);
-				log("popped " + next + " from liarsQueue");
-
-				honestQueue.addAll(next.getAccused());
-				honest.addAll(next.getAccused());
-				group.remove(next);
-			}
+			iterate(honestQueue, honest, liarsQueue, liars, group);
+			iterate(liarsQueue, liars, honestQueue, honest, group);
 		}
 
 		return new Response(honest.size(), liars.size());
+	}
+
+	private List<Accuser> findRoots(Map<Accuser, Integer> countMap) {
+		// this scans the map - bad
+		List<Accuser> roots = new ArrayList<Accuser>();
+		for (Map.Entry<Accuser, Integer> entry : countMap.entrySet()) {
+			if (entry.getValue().intValue() == 0) {
+				roots.add(entry.getKey());
+			}
+		}
+		return roots;
+	}
+
+	private Map<Accuser, Integer> countEntries(Set<Accuser> group) {
+		Map<Accuser, Integer> countMap = new HashMap<Accuser, Integer>(group.size());
+
+		// TODO avoid nested loop
+		for (Accuser accuser : group) {
+			if (!countMap.containsKey(accuser)) {
+				countMap.put(accuser, 0);
+			}
+
+			for (Accuser accused : accuser.getAccused()) {
+				int count = 0;
+				if (countMap.containsKey(accused)) {
+					count = countMap.get(accused).intValue();
+				}
+				countMap.put(accused, count + 1);
+			}
+		}
+		return countMap;
+	}
+
+	// these parameter names suck
+	private void iterate(List<Accuser> currentQueue, Set<Accuser> thisSet,
+			List<Accuser> otherQueue, Set<Accuser> otherSet, Set<Accuser> group) {
+		while (!currentQueue.isEmpty()) {
+			Accuser next = currentQueue.remove(0);
+
+			otherQueue.addAll(next.getAccused());
+			for (Accuser a : next.getAccused()) {
+				if (!thisSet.contains(a)) {
+					otherSet.add(a);
+				}
+			}
+			group.remove(next);
+		}
 	}
 
 	private static void log(String message) {
