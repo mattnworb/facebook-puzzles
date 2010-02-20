@@ -28,7 +28,9 @@ public class LiarDetectorImpl implements LiarDetector {
 
 		// TODO avoid nested loop
 		for (Accuser accuser : group) {
-			countMap.put(accuser, 0);
+			if (!countMap.containsKey(accuser)) {
+				countMap.put(accuser, 0);
+			}
 
 			for (Accuser accused : accuser.getAccused()) {
 				int count = 0;
@@ -47,23 +49,23 @@ public class LiarDetectorImpl implements LiarDetector {
 
 		// find anyone with no accusations against him/her
 		// this scans the map - bad
-		Accuser root = null;
+		List<Accuser> roots = new ArrayList<Accuser>();
 		for (Map.Entry<Accuser, Integer> entry : countMap.entrySet()) {
 			if (entry.getValue().intValue() == 0) {
-				root = entry.getKey();
-				break;
+				roots.add(entry.getKey());
 			}
 		}
-
 
 		List<Accuser> honestQueue = new ArrayList<Accuser>();
 		List<Accuser> liarsQueue = new ArrayList<Accuser>();
 
-		honest.add(root);
-		honestQueue.add(root);
-		log("added root to honestQueue");
+		honest.addAll(roots);
+		honestQueue.addAll(roots);
+		log("added [" + roots.size() + "] roots to honestQueue");
 
 		while (!group.isEmpty()) {
+
+			log("loop iteration, group size [" + group.size() + "]");
 
 			// examine honest queue, then liar queue
 			while (!honestQueue.isEmpty()) {
@@ -89,6 +91,6 @@ public class LiarDetectorImpl implements LiarDetector {
 	}
 
 	private static void log(String message) {
-		// System.out.println(message);
+		System.out.println(message);
 	}
 }
