@@ -24,8 +24,12 @@ public class Main {
 		Main main = new Main();
 		try {
 			LiarDetector.Response response = main.execute(filename);
-
-			System.out.println(response.getLarger() + " " + response.getSmaller());
+			if (response == null) {
+				System.out.println("oops");
+			}
+			else {
+				System.out.println(response.getLarger() + " " + response.getSmaller());
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
