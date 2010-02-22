@@ -23,6 +23,30 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
  */
 public class AccuserGraphView {
 
+	public void drawGraph(Graph<String, String> graph, int width, int height, String name) {
+		Layout<String, String> layout = new CircleLayout<String, String>(graph);
+		layout.setSize(new Dimension(width, height));
+
+		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(layout);
+		int offset = 50;
+		vv.setPreferredSize(new Dimension(width + offset, height + offset));
+
+		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<String>());
+		// vv.getRenderContext().setEdgeLabelTransformer(new
+		// ToStringLabeller<String>());
+		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
+
+		DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
+		gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+		vv.setGraphMouse(gm);
+
+		JFrame frame = new JFrame("liarliar visualization - " + name);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().add(vv);
+		frame.pack();
+		frame.setVisible(true);
+	}
+
 	/**
 	 * @param args
 	 */
@@ -57,7 +81,8 @@ public class AccuserGraphView {
 			height = Integer.parseInt(args[2]);
 		}
 
-		drawGraph(graph, height, width, file.getName());
+		AccuserGraphView view = new AccuserGraphView();
+		view.drawGraph(graph, height, width, file.getName());
 	}
 
 	private static Graph<String, String> readFile(File file) throws IOException {
@@ -66,32 +91,6 @@ public class AccuserGraphView {
 
 		Graph<String, String> graph = AccuserToGraph.toGraph(group);
 		return graph;
-	}
-
-	private static void drawGraph(Graph<String, String> graph, int width, int height,
-			String name) {
-		Layout<String, String> layout = new CircleLayout<String, String>(graph);
-		layout.setSize(new Dimension(width, height));
-
-		VisualizationViewer<String, String> vv = new VisualizationViewer<String, String>(
-			layout);
-		int offset = 50;
-		vv.setPreferredSize(new Dimension(width + offset, height + offset));
-
-		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<String>());
-		// vv.getRenderContext().setEdgeLabelTransformer(new
-		// ToStringLabeller<String>());
-		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-
-		DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
-		gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-		vv.setGraphMouse(gm);
-
-		JFrame frame = new JFrame("liarliar visualization - " + name);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().add(vv);
-		frame.pack();
-		frame.setVisible(true);
 	}
 
 }
