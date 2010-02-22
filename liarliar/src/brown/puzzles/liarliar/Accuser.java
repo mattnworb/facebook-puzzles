@@ -14,21 +14,35 @@ public class Accuser {
 
 	private List<Accuser> accused;
 
+	private List<Accuser> accusedBy;
+
 	public Accuser(String name) {
 		this.name = name;
 		this.accused = new ArrayList<Accuser>();
+		this.accusedBy = new ArrayList<Accuser>();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void accuse(Accuser a) {
+	/**
+	 * Add an accusation from this Node to a. Also adds this instance to a's
+	 * accusedBy list
+	 * 
+	 * @param a
+	 */
+	public void addAccusation(Accuser a) {
 		accused.add(a);
+		a.accusedBy.add(this);
 	}
 
 	public List<Accuser> getAccused() {
 		return Collections.unmodifiableList(accused);
+	}
+
+	public List<Accuser> getAccusedBy() {
+		return Collections.unmodifiableList(accusedBy);
 	}
 
 	@Override

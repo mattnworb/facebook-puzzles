@@ -60,7 +60,7 @@ public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 				if (!map.containsKey(newAccusedName)) {
 					map.put(newAccusedName, new Accuser(newAccusedName));
 				}
-				acc.accuse(map.get(newAccusedName));
+				acc.addAccusation(map.get(newAccusedName));
 			}
 			parsed.add(acc);
 		}

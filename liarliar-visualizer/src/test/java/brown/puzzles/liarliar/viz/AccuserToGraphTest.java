@@ -18,9 +18,9 @@ public class AccuserToGraphTest {
 		Accuser b = new Accuser("b");
 		Accuser c = new Accuser("c");
 
-		a.accuse(b);
-		b.accuse(c);
-		c.accuse(b);
+		a.addAccusation(b);
+		b.addAccusation(c);
+		c.addAccusation(b);
 
 		Graph<String, String> graph = AccuserToGraph.toGraph(Arrays.asList(a, b, c));
 		assertEquals(3, graph.getVertexCount());

@@ -28,12 +28,12 @@ public class LiarDetectorImplTest {
 		Accuser issac = new Accuser("Issac");
 		Accuser george = new Accuser("George");
 
-		stephen.accuse(tommaso);
-		tommaso.accuse(galileo);
-		galileo.accuse(tommaso);
-		issac.accuse(tommaso);
-		george.accuse(stephen);
-		george.accuse(issac);
+		stephen.addAccusation(tommaso);
+		tommaso.addAccusation(galileo);
+		galileo.addAccusation(tommaso);
+		issac.addAccusation(tommaso);
+		george.addAccusation(stephen);
+		george.addAccusation(issac);
 
 		List<Accuser> group = Arrays.asList(stephen, tommaso, galileo, issac, george);
 		Response resp = detector.detect(group);
@@ -47,8 +47,8 @@ public class LiarDetectorImplTest {
 		Accuser p2 = new Accuser("p2");
 		Accuser p3 = new Accuser("p3");
 
-		p1.accuse(p3);
-		p2.accuse(p3);
+		p1.addAccusation(p3);
+		p2.addAccusation(p3);
 
 		List<Accuser> group = Arrays.asList(p1, p2, p3);
 		Response resp = detector.detect(group);
@@ -62,15 +62,15 @@ public class LiarDetectorImplTest {
 		Accuser p2 = new Accuser("p2");
 		Accuser p3 = new Accuser("p3");
 
-		p1.accuse(p3);
-		p2.accuse(p3);
+		p1.addAccusation(p3);
+		p2.addAccusation(p3);
 
 		Accuser p4 = new Accuser("p4");
 		Accuser p5 = new Accuser("p5");
 		Accuser p6 = new Accuser("p6");
 
-		p4.accuse(p6);
-		p5.accuse(p6);
+		p4.addAccusation(p6);
+		p5.addAccusation(p6);
 
 		List<Accuser> group = Arrays.asList(p1, p2, p3, p4, p5, p6);
 		Response resp = detector.detect(group);
@@ -84,9 +84,9 @@ public class LiarDetectorImplTest {
 		Accuser b = new Accuser("b");
 		Accuser c = new Accuser("c");
 
-		a.accuse(b);
-		b.accuse(c);
-		c.accuse(b);
+		a.addAccusation(b);
+		b.addAccusation(c);
+		c.addAccusation(b);
 
 		Response resp = detector.detect(Arrays.asList(a, b, c));
 		assertEquals(2, resp.getLarger());
@@ -100,7 +100,7 @@ public class LiarDetectorImplTest {
 
 		final Accuser start = new Accuser("start");
 		final Accuser second = new Accuser("second");
-		start.accuse(second);
+		start.addAccusation(second);
 
 		list.add(start);
 		list.add(second);
@@ -110,13 +110,17 @@ public class LiarDetectorImplTest {
 		for (int i = 0; i < 100; i++) {
 			Accuser a = new Accuser(String.valueOf(i));
 			list.add(a);
-			current.accuse(a);
+			current.addAccusation(a);
 			current = a;
 		}
-		current.accuse(second);
+		current.addAccusation(second);
 
 		Response resp = detector.detect(list);
 		assertEquals(51, resp.getLarger());
 		assertEquals(51, resp.getSmaller());
+	}
+
+	public void testDetect() {
+	
 	}
 }
