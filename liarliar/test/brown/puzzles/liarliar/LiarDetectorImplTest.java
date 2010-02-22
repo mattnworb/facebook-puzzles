@@ -119,8 +119,4 @@ public class LiarDetectorImplTest {
 		assertEquals(51, resp.getLarger());
 		assertEquals(51, resp.getSmaller());
 	}
-
-	public void testDetect() {
-	
-	}
 }
