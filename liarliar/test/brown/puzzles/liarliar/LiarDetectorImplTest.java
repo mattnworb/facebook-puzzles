@@ -1,6 +1,7 @@
 package brown.puzzles.liarliar;
 
 import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
@@ -18,6 +19,7 @@ public class LiarDetectorImplTest {
 	public void setUp() {
 		detector = new LiarDetectorImpl();
 	}
+
 	@Test
 	public void example() {
 		Accuser stephen = new Accuser("Stephen");
@@ -32,7 +34,6 @@ public class LiarDetectorImplTest {
 		issac.accuse(tommaso);
 		george.accuse(stephen);
 		george.accuse(issac);
-
 
 		List<Accuser> group = Arrays.asList(stephen, tommaso, galileo, issac, george);
 		Response resp = detector.detect(group);
@@ -75,5 +76,47 @@ public class LiarDetectorImplTest {
 		Response resp = detector.detect(group);
 		assertEquals(4, resp.getLarger());
 		assertEquals(2, resp.getSmaller());
+	}
+
+	@Test
+	public void groupWithACircle() {
+		Accuser a = new Accuser("a");
+		Accuser b = new Accuser("b");
+		Accuser c = new Accuser("c");
+
+		a.accuse(b);
+		b.accuse(c);
+		c.accuse(b);
+
+		Response resp = detector.detect(Arrays.asList(a, b, c));
+		assertEquals(2, resp.getLarger());
+		assertEquals(1, resp.getSmaller());
+	}
+
+	@Test
+	public void groupWithALargeCircle() {
+
+		List<Accuser> list = new ArrayList<Accuser>();
+
+		final Accuser start = new Accuser("start");
+		final Accuser second = new Accuser("second");
+		start.accuse(second);
+
+		list.add(start);
+		list.add(second);
+
+		Accuser current = second;
+
+		for (int i = 0; i < 100; i++) {
+			Accuser a = new Accuser(String.valueOf(i));
+			list.add(a);
+			current.accuse(a);
+			current = a;
+		}
+		current.accuse(second);
+
+		Response resp = detector.detect(list);
+		assertEquals(51, resp.getLarger());
+		assertEquals(51, resp.getSmaller());
 	}
 }
