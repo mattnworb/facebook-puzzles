@@ -7,6 +7,8 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 /**
  * @author Matt Brown
@@ -46,6 +48,10 @@ public class SimpleGraphView {
 			layout);
 		vv.setPreferredSize(new Dimension(350, 350)); // Sets the viewing area
 		// size
+
+		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Integer>());
+		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<String>());
+		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
 
 		JFrame frame = new JFrame("Simple Graph View");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
