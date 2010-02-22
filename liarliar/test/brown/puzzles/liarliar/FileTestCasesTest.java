@@ -11,7 +11,7 @@ import brown.puzzles.liarliar.LiarDetector.Response;
  * @date Feb 20, 2010
  *
  */
-public class LLGeneratorTest {
+public class FileTestCasesTest {
 
 	@Test
 	public void lltfile() throws Exception {
@@ -21,6 +21,12 @@ public class LLGeneratorTest {
 	@Test
 	public void lltenfile() throws Exception {
 		runTest("samples/llten.txt", 10);
+	}
+
+	@Test
+	public void lltest2() throws Exception {
+		// the secret to this test is that there are no roots
+		runTest("samples/lltest2.txt", 8190);
 	}
 
 	private void runTest(String filename, int size) throws IOException {
