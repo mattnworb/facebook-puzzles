@@ -10,9 +10,6 @@ import java.util.Collection;
  */
 public class Main {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.out.println("Usage: Main <filename>");
