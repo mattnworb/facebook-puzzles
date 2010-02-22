@@ -1,6 +1,8 @@
 package brown.puzzles.liarliar.viz;
 
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
  * @author Matt Brown
