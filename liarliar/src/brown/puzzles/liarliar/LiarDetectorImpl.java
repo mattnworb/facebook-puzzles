@@ -99,7 +99,7 @@ public class LiarDetectorImpl implements LiarDetector {
 		// operation of the 'queue' is better than O(N). For TreeSet, it is
 		// guaranteed O(log(N)).
 		for (Accuser node : nodes) {
-			if (!queue.contains(node)) {
+			if (!isLabeled(node) && !queue.contains(node)) {
 				queue.add(node);
 				log("enqueue: added " + node + " to queue");
 			}
