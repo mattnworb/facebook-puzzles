@@ -2,10 +2,7 @@ package brown.puzzles.liarliar;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,6 +11,10 @@ import java.util.Set;
  */
 public class LiarDetectorImpl implements LiarDetector {
 
+	private Partition<Accuser> partition1 = new Partition<Accuser>("p1");
+
+	private Partition<Accuser> partition2 = new Partition<Accuser>("p2");
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -21,85 +22,68 @@ public class LiarDetectorImpl implements LiarDetector {
 	 */
 	public Response detect(Collection<Accuser> accusers) {
 
-		Set<Accuser> group = new HashSet<Accuser>(accusers);
+		log("starting with size " + accusers.size());
 
-		// count number of accusations against each member
-		Map<Accuser, Integer> countMap = countEntries(group);
+		List<Accuser> group = new ArrayList<Accuser>(accusers);
 
-		log("count table: " + countMap);
-
-
-		// find anyone with no accusations against him/her
-		List<Accuser> roots = findRoots(countMap);
-		log("roots: " + roots);
-
-		Set<Accuser> honest = new HashSet<Accuser>();
-		Set<Accuser> liars = new HashSet<Accuser>();
-
-		List<Accuser> honestQueue = new ArrayList<Accuser>();
-		List<Accuser> liarsQueue = new ArrayList<Accuser>();
-
-		honest.addAll(roots);
-		honestQueue.addAll(roots);
-		log("added [" + roots.size() + "] roots to honestQueue");
+		List<Accuser> p1Queue = new ArrayList<Accuser>();
+		List<Accuser> p2Queue = new ArrayList<Accuser>();
 
 		while (!group.isEmpty()) {
 
-			log("loop iteration, group size [" + group.size() + "]");
+			// enqueue the first item in the list.
+			// if we are coming back here after iterations of the below loop, it
+			// means we have a disconnected graph and we need to start working
+			// on another segment of the graph. Partition1 is picked
+			// arbitrarily.
+			Accuser root = group.remove(0);
 
-			if (honestQueue.isEmpty() && liarsQueue.isEmpty()) {
-				log("stuck!");
-				log("original: " + accusers);
-				log("roots: " + roots);
-				log("honest: " + honest);
-				log("liars: " + liars);
-				log("group: " + group);
+			p1Queue.add(root);
 
-				return null;
-			}
+			while (!p1Queue.isEmpty() || !p2Queue.isEmpty()) {
 
-			// examine honest queue, then liar queue
-			iterate(honestQueue, honest, liarsQueue, liars, group);
-			iterate(liarsQueue, liars, honestQueue, honest, group);
-		}
+				while (!p1Queue.isEmpty()) {
+					Accuser p1 = p1Queue.remove(0);
+					log("popped " + p1 + " from p1Queue");
 
-		return new Response(honest.size(), liars.size());
-	}
+					if (!partition1.contains(p1)) {
+						addToPartition(partition1, p1);
 
-	private List<Accuser> findRoots(Map<Accuser, Integer> countMap) {
-		// this scans the map - bad
-		List<Accuser> roots = new ArrayList<Accuser>();
-		for (Map.Entry<Accuser, Integer> entry : countMap.entrySet()) {
-			if (entry.getValue().intValue() == 0) {
-				roots.add(entry.getKey());
-			}
-		}
-		return roots;
-	}
-
-	private Map<Accuser, Integer> countEntries(Set<Accuser> group) {
-		Map<Accuser, Integer> countMap = new HashMap<Accuser, Integer>(group.size());
-
-		// TODO avoid nested loop
-		for (Accuser accuser : group) {
-			if (!countMap.containsKey(accuser)) {
-				countMap.put(accuser, 0);
-			}
-
-			for (Accuser accused : accuser.getAccused()) {
-				int count = 0;
-				if (countMap.containsKey(accused)) {
-					count = countMap.get(accused).intValue();
+						p2Queue.addAll(p1.getAccused());
+						group.removeAll(p1.getAccused());
+						p2Queue.addAll(p1.getAccusedBy());
+						group.removeAll(p1.getAccusedBy());
+					}
 				}
-				countMap.put(accused, count + 1);
+
+				while (!p2Queue.isEmpty()) {
+					Accuser p2 = p2Queue.remove(0);
+					log("popped " + p2 + " from p2Queue");
+
+					if (!partition2.contains(p2)) {
+						addToPartition(partition2, p2);
+
+						p1Queue.addAll(p2.getAccused());
+						group.removeAll(p2.getAccused());
+						p1Queue.addAll(p2.getAccusedBy());
+						group.removeAll(p2.getAccusedBy());
+					}
+				}
+
 			}
 		}
-		return countMap;
+
+		return new Response(partition1.size(), partition2.size());
+	}
+
+	private void addToPartition(Partition<Accuser> partition, Accuser node) {
+		log("adding " + node + " to " + partition);
+		partition.add(node);
 	}
 
 	// these parameter names suck
-	private void iterate(List<Accuser> currentQueue, Set<Accuser> thisSet,
-			List<Accuser> otherQueue, Set<Accuser> otherSet, Set<Accuser> group) {
+	private void iterate(List<Accuser> currentQueue, Set<Accuser> thisSet, List<Accuser> otherQueue,
+			Set<Accuser> otherSet, Collection<Accuser> group) {
 		while (!currentQueue.isEmpty()) {
 			Accuser next = currentQueue.remove(0);
 
@@ -114,6 +98,6 @@ public class LiarDetectorImpl implements LiarDetector {
 	}
 
 	private static void log(String message) {
-		// System.out.println(message);
+		System.out.println(message);
 	}
 }
