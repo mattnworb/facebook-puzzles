@@ -14,6 +14,8 @@ public class LiarDetectorImpl implements LiarDetector {
 
 	private Partition<Accuser> partition2 = new Partition<Accuser>("p2");
 
+	private static final boolean LOG_ENABLED = System.getProperty("liarliar.log") == null;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -89,8 +91,19 @@ public class LiarDetectorImpl implements LiarDetector {
 	 * @param nodes
 	 */
 	private void enqueue(SortedSet<Accuser> queue, Collection<Accuser> nodes) {
-		queue.addAll(nodes);
-		log("enqueue: added " + nodes + " to queue");
+
+		// instead of using addAll() to add the full collection, test each node
+		// to see if it is contained in the queue first.
+
+		// This is ONLY a good idea when we happen to know that the contains
+		// operation of the 'queue' is better than O(N). For TreeSet, it is
+		// guaranteed O(log(N)).
+		for (Accuser node : nodes) {
+			if (!queue.contains(node)) {
+				queue.add(node);
+				log("enqueue: added " + node + " to queue");
+			}
+		}
 	}
 
 	private Accuser dequeue(SortedSet<Accuser> queue) {
@@ -104,6 +117,6 @@ public class LiarDetectorImpl implements LiarDetector {
 	}
 
 	private static void log(String message) {
-		if (System.getProperty("liarliar.log") == null) System.out.println(message);
+		if (LOG_ENABLED) System.out.println(message);
 	}
 }
