@@ -3,7 +3,6 @@ package brown.puzzles.liarliar;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Matt Brown
@@ -46,7 +45,7 @@ public class LiarDetectorImpl implements LiarDetector {
 					Accuser p1 = p1Queue.remove(0);
 					log("popped " + p1 + " from p1Queue");
 
-					if (!partition1.contains(p1)) {
+					if (!isLabeled(p1)) {
 						addToPartition(partition1, p1);
 
 						p2Queue.addAll(p1.getAccused());
@@ -60,7 +59,7 @@ public class LiarDetectorImpl implements LiarDetector {
 					Accuser p2 = p2Queue.remove(0);
 					log("popped " + p2 + " from p2Queue");
 
-					if (!partition2.contains(p2)) {
+					if (!isLabeled(p2)) {
 						addToPartition(partition2, p2);
 
 						p1Queue.addAll(p2.getAccused());
@@ -73,6 +72,8 @@ public class LiarDetectorImpl implements LiarDetector {
 			}
 		}
 
+		log("exiting - p1 size [" + partition1.size() + "] p2 size [" + partition2.size() + "]");
+
 		return new Response(partition1.size(), partition2.size());
 	}
 
@@ -81,23 +82,11 @@ public class LiarDetectorImpl implements LiarDetector {
 		partition.add(node);
 	}
 
-	// these parameter names suck
-	private void iterate(List<Accuser> currentQueue, Set<Accuser> thisSet, List<Accuser> otherQueue,
-			Set<Accuser> otherSet, Collection<Accuser> group) {
-		while (!currentQueue.isEmpty()) {
-			Accuser next = currentQueue.remove(0);
-
-			otherQueue.addAll(next.getAccused());
-			for (Accuser a : next.getAccused()) {
-				if (!thisSet.contains(a)) {
-					otherSet.add(a);
-				}
-			}
-			group.remove(next);
-		}
+	private boolean isLabeled(Accuser node) {
+		return partition1.contains(node) || partition2.contains(node);
 	}
 
 	private static void log(String message) {
-		System.out.println(message);
+		if (System.getProperty("liarliar.log") == null) System.out.println(message);
 	}
 }
