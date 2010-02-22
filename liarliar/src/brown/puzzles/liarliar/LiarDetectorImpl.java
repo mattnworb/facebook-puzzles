@@ -91,9 +91,7 @@ public class LiarDetectorImpl implements LiarDetector {
 	 * @param nodes
 	 */
 	private void enqueue(Queue<Accuser> queue, Collection<Accuser> nodes) {
-		for (Accuser node : nodes) {
-			queue.add(node);
-		}
+		queue.addAll(nodes);
 	}
 
 	private boolean isLabeled(Accuser node) {
