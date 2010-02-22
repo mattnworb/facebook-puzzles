@@ -8,7 +8,7 @@ import java.util.List;
  * @author Matt Brown
  * @date Feb 18, 2010
  */
-public class Accuser {
+public class Accuser implements Comparable<Accuser> {
 
 	private String name;
 
@@ -78,5 +78,10 @@ public class Accuser {
 		sb.append("]");
 
 		return "[name=" + name + ",accused=" + sb.toString() + "]";
+	}
+
+	@Override
+	public int compareTo(Accuser o) {
+		return this.name.compareTo(o.name);
 	}
 }

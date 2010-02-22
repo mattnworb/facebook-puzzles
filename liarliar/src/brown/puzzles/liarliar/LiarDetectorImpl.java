@@ -1,10 +1,8 @@
 package brown.puzzles.liarliar;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author Matt Brown
@@ -25,10 +23,10 @@ public class LiarDetectorImpl implements LiarDetector {
 
 		log("starting with size " + accusers.size());
 
-		List<Accuser> group = new ArrayList<Accuser>(accusers);
+		SortedSet<Accuser> group = new TreeSet<Accuser>(accusers);
 
-		Queue<Accuser> p1Queue = new LinkedList<Accuser>();
-		Queue<Accuser> p2Queue = new LinkedList<Accuser>();
+		SortedSet<Accuser> p1Queue = new TreeSet<Accuser>();
+		SortedSet<Accuser> p2Queue = new TreeSet<Accuser>();
 
 		while (!group.isEmpty()) {
 
@@ -37,15 +35,15 @@ public class LiarDetectorImpl implements LiarDetector {
 			// means we have a disconnected graph and we need to start working
 			// on another segment of the graph. Partition1 is picked
 			// arbitrarily.
-			Accuser root = group.remove(0);
+			Accuser root = dequeue(group);
 
 			p1Queue.add(root);
 
 			while (!p1Queue.isEmpty() || !p2Queue.isEmpty()) {
 
 				while (!p1Queue.isEmpty()) {
-					Accuser p1 = p1Queue.remove();
-					log("popped " + p1 + " from p1Queue");
+					Accuser p1 = dequeue(p1Queue);
+					log("dequeue: popped " + p1 + " from p1Queue");
 
 					if (!isLabeled(p1)) {
 						addToPartition(partition1, p1);
@@ -58,8 +56,8 @@ public class LiarDetectorImpl implements LiarDetector {
 				}
 
 				while (!p2Queue.isEmpty()) {
-					Accuser p2 = p2Queue.remove();
-					log("popped " + p2 + " from p2Queue");
+					Accuser p2 = dequeue(p2Queue);
+					log("dequeue: popped " + p2 + " from p2Queue");
 
 					if (!isLabeled(p2)) {
 						addToPartition(partition2, p2);
@@ -90,8 +88,15 @@ public class LiarDetectorImpl implements LiarDetector {
 	 * @param queue
 	 * @param nodes
 	 */
-	private void enqueue(Queue<Accuser> queue, Collection<Accuser> nodes) {
+	private void enqueue(SortedSet<Accuser> queue, Collection<Accuser> nodes) {
 		queue.addAll(nodes);
+		log("enqueue: added " + nodes + " to queue");
+	}
+
+	private Accuser dequeue(SortedSet<Accuser> queue) {
+		Accuser first = queue.first();
+		queue.remove(first);
+		return first;
 	}
 
 	private boolean isLabeled(Accuser node) {

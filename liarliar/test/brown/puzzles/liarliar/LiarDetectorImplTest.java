@@ -98,8 +98,8 @@ public class LiarDetectorImplTest {
 
 		List<Accuser> list = new ArrayList<Accuser>();
 
-		final Accuser start = new Accuser("start");
-		final Accuser second = new Accuser("second");
+		final Accuser start = new Accuser("0");
+		final Accuser second = new Accuser("1");
 		start.addAccusation(second);
 
 		list.add(start);
@@ -107,13 +107,13 @@ public class LiarDetectorImplTest {
 
 		Accuser current = second;
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 2; i < 102; i++) {
 			Accuser a = new Accuser(String.valueOf(i));
 			list.add(a);
 			current.addAccusation(a);
 			current = a;
 		}
-		current.addAccusation(second);
+		current.addAccusation(start);
 
 		Response resp = detector.detect(list);
 		assertEquals(51, resp.getLarger());
