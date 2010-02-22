@@ -2,7 +2,9 @@ package brown.puzzles.liarliar;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author Matt Brown
@@ -25,8 +27,8 @@ public class LiarDetectorImpl implements LiarDetector {
 
 		List<Accuser> group = new ArrayList<Accuser>(accusers);
 
-		List<Accuser> p1Queue = new ArrayList<Accuser>();
-		List<Accuser> p2Queue = new ArrayList<Accuser>();
+		Queue<Accuser> p1Queue = new LinkedList<Accuser>();
+		Queue<Accuser> p2Queue = new LinkedList<Accuser>();
 
 		while (!group.isEmpty()) {
 
@@ -42,29 +44,29 @@ public class LiarDetectorImpl implements LiarDetector {
 			while (!p1Queue.isEmpty() || !p2Queue.isEmpty()) {
 
 				while (!p1Queue.isEmpty()) {
-					Accuser p1 = p1Queue.remove(0);
+					Accuser p1 = p1Queue.remove();
 					log("popped " + p1 + " from p1Queue");
 
 					if (!isLabeled(p1)) {
 						addToPartition(partition1, p1);
 
-						p2Queue.addAll(p1.getAccused());
+						enqueue(p2Queue, p1.getAccused());
+						enqueue(p2Queue, p1.getAccusedBy());
 						group.removeAll(p1.getAccused());
-						p2Queue.addAll(p1.getAccusedBy());
 						group.removeAll(p1.getAccusedBy());
 					}
 				}
 
 				while (!p2Queue.isEmpty()) {
-					Accuser p2 = p2Queue.remove(0);
+					Accuser p2 = p2Queue.remove();
 					log("popped " + p2 + " from p2Queue");
 
 					if (!isLabeled(p2)) {
 						addToPartition(partition2, p2);
 
-						p1Queue.addAll(p2.getAccused());
+						enqueue(p1Queue, p2.getAccused());
+						enqueue(p1Queue, p2.getAccusedBy());
 						group.removeAll(p2.getAccused());
-						p1Queue.addAll(p2.getAccusedBy());
 						group.removeAll(p2.getAccusedBy());
 					}
 				}
@@ -80,6 +82,18 @@ public class LiarDetectorImpl implements LiarDetector {
 	private void addToPartition(Partition<Accuser> partition, Accuser node) {
 		log("adding " + node + " to " + partition);
 		partition.add(node);
+	}
+
+	/**
+	 * Adds Collection of nodes to Queue
+	 * 
+	 * @param queue
+	 * @param nodes
+	 */
+	private void enqueue(Queue<Accuser> queue, Collection<Accuser> nodes) {
+		for (Accuser node : nodes) {
+			queue.add(node);
+		}
 	}
 
 	private boolean isLabeled(Accuser node) {
