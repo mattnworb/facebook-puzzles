@@ -1,4 +1,4 @@
 #!/bin/bash
 
-#ant -q build
-java -Xmx1024M -cp build brown.puzzles.liarliar.Main $*
+JAVA_OPTS="-Xmx256M"
+java $JAVA_OPTS -cp build brown.puzzles.liarliar.Main $*
