@@ -1,8 +1,13 @@
 package brown.puzzles.liarliar;
 
-/*
- * usage: java LLTest2 the right answer is always 4095 4095 warning: very slight
+/**
+ * Usage: java LLTest2 the right answer is always 4095 4095 warning: very slight
  * chance of producing an invalid input
+ * 
+ * @author David Eisenstat
+ * @see <a href=
+ *      "http://www.facebook.com/topic.php?uid=15325934266&topic=9670&start=0&hash=bc5a7e1758b4cdec18e4fc7f28e176b2#topic_top">Facebook
+ *      puzzle forum</a>
  */
 class LLTest2 {
 
