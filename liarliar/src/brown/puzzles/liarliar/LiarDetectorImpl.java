@@ -14,7 +14,11 @@ public class LiarDetectorImpl implements LiarDetector {
 
 	private Partition<Accuser> partition2 = new Partition<Accuser>("p2");
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see brown.puzzles.liarliar.LiarDetector#detect(java.util.Collection)
+	 */
 	public Response detect(Collection<Accuser> accusers) {
 
 		// group should not be an ArrayList or any datatype where

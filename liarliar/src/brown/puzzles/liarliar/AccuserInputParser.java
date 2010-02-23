@@ -16,7 +16,11 @@ import brown.puzzles.InputParser;
  */
 public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see brown.puzzles.InputParser#parseFile(java.io.File)
+	 */
 	public Collection<Accuser> parseFile(File file) throws IOException {
 
 		Map<String, Accuser> map = new HashMap<String, Accuser>();

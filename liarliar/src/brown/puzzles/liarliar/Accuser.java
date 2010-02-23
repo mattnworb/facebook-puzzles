@@ -77,7 +77,11 @@ public class Accuser implements Comparable<Accuser> {
 		return true;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	public int compareTo(Accuser o) {
 		return this.name.compareTo(o.name);
 	}
