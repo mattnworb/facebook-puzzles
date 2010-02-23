@@ -19,8 +19,8 @@ public class FileTestCasesTest {
 	}
 
 	@Test
-	public void lltenfile() throws Exception {
-		runTest("samples/llten.txt", 10);
+	public void c350kfile() throws Exception {
+		runTest("samples/c350k.in", 350000);
 	}
 
 	@Test
