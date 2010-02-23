@@ -26,7 +26,6 @@ public class LiarDetectorImpl implements LiarDetector {
 	 */
 	public Response detect(Collection<Accuser> accusers) {
 
-		log("starting with size " + accusers.size());
 
 		SortedSet<Accuser> group = new TreeSet<Accuser>(accusers);
 
@@ -48,7 +47,6 @@ public class LiarDetectorImpl implements LiarDetector {
 
 				while (!p1Queue.isEmpty()) {
 					Accuser p1 = dequeue(p1Queue);
-					log("dequeue: popped " + p1 + " from p1Queue");
 
 					if (!isLabeled(p1)) {
 						addToPartition(partition1, p1);
@@ -62,7 +60,6 @@ public class LiarDetectorImpl implements LiarDetector {
 
 				while (!p2Queue.isEmpty()) {
 					Accuser p2 = dequeue(p2Queue);
-					log("dequeue: popped " + p2 + " from p2Queue");
 
 					if (!isLabeled(p2)) {
 						addToPartition(partition2, p2);
@@ -77,13 +74,11 @@ public class LiarDetectorImpl implements LiarDetector {
 			}
 		}
 
-		log("exiting - p1 size [" + partition1.size() + "] p2 size [" + partition2.size() + "]");
 
 		return new Response(partition1.size(), partition2.size());
 	}
 
 	private void addToPartition(Partition<Accuser> partition, Accuser node) {
-		log("adding " + node + " to " + partition);
 		partition.add(node);
 	}
 
@@ -104,7 +99,6 @@ public class LiarDetectorImpl implements LiarDetector {
 		for (Accuser node : nodes) {
 			if (!isLabeled(node) && !queue.contains(node)) {
 				queue.add(node);
-				log("enqueue: added " + node + " to queue");
 			}
 		}
 	}

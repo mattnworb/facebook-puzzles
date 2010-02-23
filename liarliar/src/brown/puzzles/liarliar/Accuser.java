@@ -67,20 +67,6 @@ public class Accuser implements Comparable<Accuser> {
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("[");
-		if (!accused.isEmpty()) {
-			for (Accuser obj : accused) {
-				sb.append(obj.name).append(",");
-			}
-			sb.delete(sb.length() - 1, sb.length());
-		}
-		sb.append("]");
-
-		return "[name=" + name + ",accused=" + sb.toString() + "]";
-	}
-
-	@Override
 	public int compareTo(Accuser o) {
 		return this.name.compareTo(o.name);
 	}
