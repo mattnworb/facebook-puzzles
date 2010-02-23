@@ -14,8 +14,11 @@ public class LiarDetectorImpl implements LiarDetector {
 
 	private Partition<Accuser> partition2 = new Partition<Accuser>("p2");
 
-	private static final boolean LOG_ENABLED = System.getProperty("liarliar.log") == null;
+	private final boolean log_enabled;
 
+	public LiarDetectorImpl() {
+		log_enabled = Boolean.valueOf(System.getProperty("liarliar.log")).booleanValue();
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -116,7 +119,7 @@ public class LiarDetectorImpl implements LiarDetector {
 		return partition1.contains(node) || partition2.contains(node);
 	}
 
-	private static void log(String message) {
-		if (LOG_ENABLED) System.out.println(message);
+	private void log(String message) {
+		if (log_enabled) System.out.println(message);
 	}
 }
