@@ -1,6 +1,7 @@
 package brown.puzzles.liarliar;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class Partition<T> {
 	}
 
 	public Collection<T> getAll() {
-		return this.set;
+		return Collections.unmodifiableSet(this.set);
 	}
 	@Override
 	public String toString() {

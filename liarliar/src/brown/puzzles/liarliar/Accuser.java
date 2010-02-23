@@ -1,6 +1,7 @@
 package brown.puzzles.liarliar;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,11 +40,11 @@ public class Accuser implements Comparable<Accuser> {
 		a.accusedBy.add(this);
 	}
 
-	public List<Accuser> getAccused() {
+	public Collection<Accuser> getAccused() {
 		return Collections.unmodifiableList(accused);
 	}
 
-	public List<Accuser> getAccusedBy() {
+	public Collection<Accuser> getAccusedBy() {
 		return Collections.unmodifiableList(accusedBy);
 	}
 

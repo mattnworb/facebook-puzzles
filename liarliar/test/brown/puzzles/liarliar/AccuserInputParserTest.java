@@ -5,8 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +53,9 @@ public class AccuserInputParserTest {
 		assertEquals(2, george.getAccused().size());
 
 		Accuser tomasso = map.get("Tommaso");
-		assertSame(tomasso, stephen.getAccused().get(0));
-		assertTrue(stephen.getAccused().get(0).getAccusedBy().contains(stephen));
+		List<Accuser> stephenAccused = new ArrayList<Accuser>(stephen.getAccused());
+		assertSame(tomasso, stephenAccused.get(0));
+		assertTrue(stephenAccused.get(0).getAccusedBy().contains(stephen));
 
 	}
 
