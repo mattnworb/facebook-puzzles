@@ -3,7 +3,6 @@ package brown.puzzles.liarliar;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Scanner;
 
 /**
  * @author Matt Brown
@@ -17,8 +16,8 @@ public class Main {
 			System.exit(-1);
 		}
 
-		System.out.println("Press enter to begin");
-		new Scanner(System.in).nextLine();
+		// System.out.println("Press enter to begin");
+		// new Scanner(System.in).nextLine();
 
 		String filename = args[0];
 
