@@ -14,11 +14,7 @@ import brown.puzzles.InputParser;
  */
 public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see brown.puzzles.InputParser#parseFile(java.io.File)
-	 */
+	@Override
 	public Collection<Accuser> parseFile(File file) throws IOException {
 		Scanner sc = null;
 
