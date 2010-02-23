@@ -35,6 +35,9 @@ public class Partition<T> {
 		return this.set.size();
 	}
 
+	public Collection<T> getAll() {
+		return this.set;
+	}
 	@Override
 	public String toString() {
 		return "Parition [" + name + "]";

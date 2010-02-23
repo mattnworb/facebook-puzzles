@@ -1,4 +1,4 @@
 #!/bin/bash
 
-JAVA_OPTS="-Xmx256M"
+JAVA_OPTS="-Xmx512M"
 java $JAVA_OPTS -cp build brown.puzzles.liarliar.Main $*

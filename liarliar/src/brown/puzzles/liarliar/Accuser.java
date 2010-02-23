@@ -16,6 +16,8 @@ public class Accuser implements Comparable<Accuser> {
 
 	private List<Accuser> accusedBy;
 
+	private String label;
+
 	public Accuser(String name) {
 		this.name = name;
 		this.accused = new ArrayList<Accuser>();
@@ -43,6 +45,14 @@ public class Accuser implements Comparable<Accuser> {
 
 	public List<Accuser> getAccusedBy() {
 		return Collections.unmodifiableList(accusedBy);
+	}
+
+	public void addLabel(String label) {
+		this.label = label;
+	}
+
+	public boolean isLabeled() {
+		return this.label != null;
 	}
 
 	@Override

@@ -14,21 +14,18 @@ public class LiarDetectorImpl implements LiarDetector {
 
 	private Partition<Accuser> partition2 = new Partition<Accuser>("p2");
 
-	private final boolean log_enabled;
-
-	public LiarDetectorImpl() {
-		log_enabled = Boolean.valueOf(System.getProperty("liarliar.log")).booleanValue();
-	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see brown.puzzles.liarliar.LiarDetector#detect(java.util.Collection)
-	 */
+	@Override
 	public Response detect(Collection<Accuser> accusers) {
 
-
+		// group should not be an ArrayList or any datatype where
+		// indexing/iteration is costly, since we need to call removeAll() on it
+		// often.
 		SortedSet<Accuser> group = new TreeSet<Accuser>(accusers);
 
+		// linkedLists for the p1 and p2 queues work poorly because we need to
+		// enqueue entire collections of nodes at a time. With a linkedList, we
+		// have no performant way to check if an item is already in the list
+		// (this involves scanning the linked list)
 		SortedSet<Accuser> p1Queue = new TreeSet<Accuser>();
 		SortedSet<Accuser> p2Queue = new TreeSet<Accuser>();
 
@@ -49,12 +46,10 @@ public class LiarDetectorImpl implements LiarDetector {
 					Accuser p1 = dequeue(p1Queue);
 
 					if (!isLabeled(p1)) {
-						addToPartition(partition1, p1);
+						addToPartition(partition1, "p1", p1);
 
 						enqueue(p2Queue, p1.getAccused());
 						enqueue(p2Queue, p1.getAccusedBy());
-						group.removeAll(p1.getAccused());
-						group.removeAll(p1.getAccusedBy());
 					}
 				}
 
@@ -62,24 +57,26 @@ public class LiarDetectorImpl implements LiarDetector {
 					Accuser p2 = dequeue(p2Queue);
 
 					if (!isLabeled(p2)) {
-						addToPartition(partition2, p2);
+						addToPartition(partition2, "p2", p2);
 
 						enqueue(p1Queue, p2.getAccused());
 						enqueue(p1Queue, p2.getAccusedBy());
-						group.removeAll(p2.getAccused());
-						group.removeAll(p2.getAccusedBy());
 					}
 				}
 
 			}
-		}
 
+			group.removeAll(partition1.getAll());
+			group.removeAll(partition2.getAll());
+		}
 
 		return new Response(partition1.size(), partition2.size());
 	}
 
-	private void addToPartition(Partition<Accuser> partition, Accuser node) {
+	private void addToPartition(Partition<Accuser> partition, String labelName,
+			Accuser node) {
 		partition.add(node);
+		node.addLabel(labelName);
 	}
 
 	/**
@@ -110,10 +107,6 @@ public class LiarDetectorImpl implements LiarDetector {
 	}
 
 	private boolean isLabeled(Accuser node) {
-		return partition1.contains(node) || partition2.contains(node);
-	}
-
-	private void log(String message) {
-		if (log_enabled) System.out.println(message);
+		return node.isLabeled();
 	}
 }
