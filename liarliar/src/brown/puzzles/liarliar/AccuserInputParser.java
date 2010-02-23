@@ -1,11 +1,13 @@
 package brown.puzzles.liarliar;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import brown.puzzles.InputParser;
 
 /**
@@ -16,48 +18,35 @@ public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 
 	@Override
 	public Collection<Accuser> parseFile(File file) throws IOException {
-		Scanner sc = null;
-
-		Collection<Accuser> parsed = null;
-
-		try {
-			sc = new Scanner(file);
-
-			parsed = parse(sc);
-
-		}
-		finally {
-			if (sc != null) sc.close();
-		}
-
-		return parsed;
-	}
-
-	private Collection<Accuser> parse(Scanner sc) {
 
 		Map<String, Accuser> map = new HashMap<String, Accuser>();
 
-		final int numLines = sc.nextInt();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+			new FileInputStream(file)));
+
+		final int numLines = Integer.parseInt(reader.readLine().trim());
 
 		for (int i = 0; i < numLines; i++) {
-			final String name = sc.next();
-			final int accusations = sc.nextInt();
+			String[] sp = reader.readLine().split("\\s+");
 
-			if (!map.containsKey(name)) {
-				map.put(name, new Accuser(name));
-			}
-			Accuser acc = map.get(name);
+			final String name = sp[0].trim();
+			Accuser a = getAccuser(map, name);
+
+			final int accusations = Integer.parseInt(sp[1].trim());
 
 			for (int j = 0; j < accusations; j++) {
-				String newAccusedName = sc.next();
-
-				if (!map.containsKey(newAccusedName)) {
-					map.put(newAccusedName, new Accuser(newAccusedName));
-				}
-				acc.addAccusation(map.get(newAccusedName));
+				Accuser b = getAccuser(map, reader.readLine().trim());
+				a.addAccusation(b);
 			}
 		}
 
 		return map.values();
+	}
+
+	private Accuser getAccuser(Map<String, Accuser> map, final String name) {
+		if (!map.containsKey(name)) {
+			map.put(name, new Accuser(name));
+		}
+		return map.get(name);
 	}
 }
