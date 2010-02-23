@@ -16,9 +16,6 @@ public class Main {
 			System.exit(-1);
 		}
 
-		// System.out.println("Press enter to begin");
-		// new Scanner(System.in).nextLine();
-
 		String filename = args[0];
 
 		Main main = new Main();
@@ -28,7 +25,8 @@ public class Main {
 				System.out.println("oops");
 			}
 			else {
-				System.out.println(response.getLarger() + " " + response.getSmaller());
+				System.out.print(response.getLarger() + " " + response.getSmaller()
+						+ '\n');
 			}
 		}
 		catch (IOException e) {
