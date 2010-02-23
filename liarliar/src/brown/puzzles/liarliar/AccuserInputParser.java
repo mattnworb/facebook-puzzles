@@ -2,7 +2,6 @@ package brown.puzzles.liarliar;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,6 @@ public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 
 	private Collection<Accuser> parse(Scanner sc) {
 
-		Collection<Accuser> parsed = new ArrayList<Accuser>();
 		Map<String, Accuser> map = new HashMap<String, Accuser>();
 
 		final int numLines = sc.nextInt();
@@ -62,9 +60,8 @@ public class AccuserInputParser implements InputParser<Collection<Accuser>> {
 				}
 				acc.addAccusation(map.get(newAccusedName));
 			}
-			parsed.add(acc);
 		}
 
-		return parsed;
+		return map.values();
 	}
 }
