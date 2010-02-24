@@ -1,0 +1,7 @@
+.bin
+build
+*.class
+*.tar.gz
+target
+*.log
+testruns.txt

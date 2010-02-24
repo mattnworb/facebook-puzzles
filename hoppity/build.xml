@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build"> 
+	
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+	<property name="build.dir" location="."/>
+	<property name="src.dir" location="."/>
+
+	<property name="puzzleName" value="hoppity"/>
+	
+	<path id="puzzle.classpath">
+        <pathelement location="${build.dir}"/>
+    </path>
+    
+	<target name="init">
+        <mkdir dir="${build.dir}"/>
+    </target>
+	
+    <target name="clean">
+        <delete>
+			<fileset dir="${build.dir}" includes="*.class,*.tar.gz"/>
+		</delete>
+    </target>
+
+	<target depends="init" name="build">
+        <javac debug="true" destdir="${build.dir}" source="${source}" target="${target}">
+            <src path="${src.dir}"/>
+			<exclude name="test/**/*.java"/>
+            <classpath refid="puzzle.classpath"/>
+        </javac>
+    </target>
+	
+	<target name="package" depends="build">
+		<tar compression="gzip" destfile="${puzzleName}.tar.gz">
+			<tarfileset dir="${basedir}" includes="${puzzleName},build.xml" filemode="755"/>
+			<tarfileset dir="${src.dir}" includes="*.java" />
+		</tar>
+			
+	</target>
+    
+</project>
