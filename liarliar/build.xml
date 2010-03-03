@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- WARNING: Eclipse auto-generated file.
-              Any modifications will be overwritten.
-              To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="liarliar">
 	
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.5"/>
-    <property name="source" value="1.5"/>
+	<property name="target" value="1.5"/>
+	<property name="source" value="1.5"/>
 	<property name="build.dir" location="build"/>
 	
 	<path id="liarliar.classpath">
-        <pathelement location="${build.dir}"/>
-    </path>
-    
-	<target name="init">
-        <mkdir dir="${build.dir}"/>
-    </target>
+		<pathelement location="${build.dir}"/>
+	</path>
 	
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    	<delete file="${ant.project.name}.tar.gz"/>
-    </target>
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+	</target>
+	
+	<target name="clean">
+		<delete>
+	 		<fileset dir="${build.dir}" includes="*.class,*.tar.gz"/>
+		</delete>
+	</target>
 
 	<target depends="init" name="build">
-        <javac debug="true" debuglevel="${debuglevel}" destdir="${build.dir}" source="${source}" target="${target}">
-            <src path="src"/>
-            <classpath refid="liarliar.classpath"/>
-        </javac>
-    </target>
-	
+		<javac debug="true" destdir="${build.dir}" source="${source}" target="${target}">
+		<src path="src"/>
+			<exclude name="test/**/*.java"/>
+			<classpath refid="liarliar.classpath"/>
+		</javac>
+	</target>
+
 	<target name="package" depends="build">
 		<tar compression="gzip" destfile="${ant.project.name}.tar.gz">
 			<tarfileset dir="${basedir}" includes="liarliar,build.xml" filemode="755"/>
-			<tarfileset dir="src" prefix="src" />
+			<tarfileset dir="src" prefix="src" includes="**/*.java" excludes="**/LLTest*" />
 		</tar>
-			
 	</target>
-    
 </project>
