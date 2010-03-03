@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="breathalyzer">
+	
+	<property name="target" value="1.5"/>
+	<property name="source" value="1.5"/>
+	<property name="build.dir" location="build"/>
+	
+	<path id="breathalyzer.classpath">
+		<pathelement location="${build.dir}"/>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+	</target>
+	
+	<target name="clean">
+		<delete>
+	 		<fileset dir="${build.dir}" includes="*.class,*.tar.gz"/>
+		</delete>
+	</target>
+
+	<target depends="init" name="build">
+		<javac debug="true" destdir="${build.dir}" source="${source}" target="${target}">
+		<src path="src"/>
+			<exclude name="test/**/*.java"/>
+			<classpath refid="breathalyzer.classpath"/>
+		</javac>
+	</target>
+
+	<target name="package" depends="build">
+		<tar compression="gzip" destfile="${ant.project.name}.tar.gz">
+			<tarfileset dir="${basedir}" includes="breathalyzer,build.xml" filemode="755"/>
+			<tarfileset dir="src" prefix="src" includes="**/*.java" excludes="**/LLTest*" />
+		</tar>
+	</target>
+</project>
