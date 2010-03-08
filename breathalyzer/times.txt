@@ -7,3 +7,14 @@ $ time ./breathalyzer testcases/spec.txt
 real    0m2.354s
 user    0m0.045s
 sys     0m0.015s
+
+#After adding a simple heuristic (triangle inequality):
+$ git branch -v
+* master   7dfe9d9 some more test cases
+
+$ time ./breathalyzer testcases/spec.txt
+8
+
+real    0m0.848s
+user    0m0.031s
+sys     0m0.031s
