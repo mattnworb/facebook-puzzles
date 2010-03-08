@@ -17,7 +17,10 @@ public class Levenshtein {
 	 * @param t
 	 * @return
 	 */
-	public static int score(String s, String t) {
+	public static int score(String a, String b) {
+
+		String s = a.toLowerCase();
+		String t = b.toLowerCase();
 
 		final int m = s.length();
 		final int n = t.length();
@@ -34,7 +37,9 @@ public class Levenshtein {
 
 		for (int j = 1; j <= n; j++) {
 			for (int i = 1; i <= m; i++) {
-				if (s.charAt(i - 1) == t.charAt(j - 1)) {
+				char x = s.charAt(i - 1);
+				char y = t.charAt(j - 1);
+				if (x == y) {
 					d[i][j] = d[i - 1][j - 1];
 				}
 				else{
@@ -43,7 +48,7 @@ public class Levenshtein {
 			}
 		}
 
-		return d[m - 1][n - 1];
+		return d[m][n];
 	}
 
 	private static int min(int a, int b, int c) {
