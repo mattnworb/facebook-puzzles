@@ -27,14 +27,17 @@ public class LengthAwareScorer implements Scorer<Map<Integer, List<String>>> {
 
 			for (Integer key : keys) {
 
-				// if the min score found is already less than the difference
-				// between word length and the key we are at, then we have no
-				// hope of finding a shorter score, so just stop looking.
-				if (min < Math.abs(len - key.intValue())) {
-					break;
-				}
-
 				for (String c : corpusMap.get(key)) {
+
+					// if the min score found is already less than the
+					// difference between word length and the key we are at,
+					// then we have no hope of finding a shorter score, so just
+					// stop looking.
+					if (min < Math.abs(len - key.intValue())) {
+						break;
+					}
+
+					
 					if (min > Math.abs(c.length() - word.length())
 							|| min == Integer.MAX_VALUE) {
 
