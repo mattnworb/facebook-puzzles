@@ -5,3 +5,5 @@ target
 *.log
 testruns.txt
 .settings
+.classpath
+.project
