@@ -37,9 +37,7 @@ public class Levenshtein {
 
 		for (int j = 1; j <= n; j++) {
 			for (int i = 1; i <= m; i++) {
-				char x = s.charAt(i - 1);
-				char y = t.charAt(j - 1);
-				if (x == y) {
+				if (s.charAt(i - 1) == t.charAt(j - 1)) {
 					d[i][j] = d[i - 1][j - 1];
 				}
 				else{
