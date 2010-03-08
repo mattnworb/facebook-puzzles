@@ -22,15 +22,7 @@ public class LengthAwareScorer implements Scorer<Map<Integer, List<String>>> {
 			// start with the words in the corpusMap with the same length, then
 			// move on to +/- 1 length off, etc.
 			final int len = word.length();
-			SortedSet<Integer> keys = new TreeSet<Integer>(new Comparator<Integer>() {
-
-				// sort based on proximity to this word's length
-				public int compare(Integer o1, Integer o2) {
-					int a = o1.intValue() - len;
-					int b = o2.intValue() - len;
-					return a < b ? -1 : (a == b ? 0 : 1);
-				}
-			});
+			SortedSet<Integer> keys = new TreeSet<Integer>(new DistanceBasedComparator(len));
 			keys.addAll(corpusMap.keySet());
 
 			for (Integer key : keys) {
@@ -57,6 +49,39 @@ public class LengthAwareScorer implements Scorer<Map<Integer, List<String>>> {
 
 		}
 		return score;
+	}
+
+	/**Comparator which orders numbers based on distance from a given integer.
+	 * @author Matt Brown
+	 * @date Mar 7, 2010
+	 */
+	public static final class DistanceBasedComparator implements Comparator<Integer> {
+	
+		private final int len;
+	
+		/**
+		 * @param len
+		 *            Number to based distance off of
+		 */
+		public DistanceBasedComparator(int len) {
+			this.len = len;
+		}
+	
+		// sort based on proximity to this word's length
+		public int compare(Integer o1, Integer o2) {
+			int a = Math.abs(o1.intValue() - len);
+			int b = Math.abs(o2.intValue() - len);
+			if (a < b) {
+				return -1;
+			}
+			else if (a > b) {
+				return 1;
+			}
+			else {
+				// two distances are equal, sort based on the numbers themselves
+				return o1.compareTo(o2);
+			}
+		}
 	}
 
 }
