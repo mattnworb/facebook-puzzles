@@ -24,7 +24,7 @@ public class Main {
 			Scorer scorer = new DefaultScorer(corpus);
 			int result = scorer.score(words);
 
-			System.out.print(result + '\n');
+			System.out.print(result + "\n");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
