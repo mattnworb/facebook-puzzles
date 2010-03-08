@@ -15,7 +15,7 @@
 	
 	<target name="clean">
 		<delete>
-	 		<fileset dir="${build.dir}" includes="*.class,*.tar.gz"/>
+	 		<fileset dir="${build.dir}" includes="**/*.class,**/*.tar.gz"/>
 		</delete>
 	</target>
 
