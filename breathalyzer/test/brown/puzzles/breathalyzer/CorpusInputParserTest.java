@@ -5,12 +5,9 @@ import java.io.File;
 import java.util.List;
 import org.junit.Test;
 
-
-
 /**
  * @author Matt Brown
  * @date Mar 7, 2010
- *
  */
 public class CorpusInputParserTest {
 
