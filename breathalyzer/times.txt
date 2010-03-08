@@ -1,0 +1,9 @@
+$ git branch -v
+* master  f4272ca oops extra char in file
+
+$ time ./breathalyzer testcases/spec.txt
+8
+
+real    0m2.354s
+user    0m0.045s
+sys     0m0.015s
