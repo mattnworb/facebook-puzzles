@@ -30,8 +30,12 @@ public class BreathalyzerInputParser implements InputParser<List<String>> {
 
 			while ((line = br.readLine()) != null) {
 				String[] sp = line.split("\\s+");
+
 				for (String s : sp) {
-					words.add(s);
+					String t = s.trim();
+					if (t.length() > 0) {
+						words.add(t);
+					}
 				}
 			}
 		}
