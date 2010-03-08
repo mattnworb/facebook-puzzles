@@ -4,3 +4,4 @@ build
 target
 *.log
 testruns.txt
+.settings
