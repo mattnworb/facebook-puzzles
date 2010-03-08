@@ -17,7 +17,7 @@ public class DefaultScorerTest {
 		List<String> words = Arrays.asList("tihs", "sententcnes", "iss", "nout",
 			"varrry", "goud");
 
-		DefaultScorer scorer = new DefaultScorer(Main.readCorpus());
-		assertEquals(8, scorer.score(words));
+		DefaultScorer scorer = new DefaultScorer();
+		assertEquals(8, scorer.score(Main.readCorpus(), words));
 	}
 }

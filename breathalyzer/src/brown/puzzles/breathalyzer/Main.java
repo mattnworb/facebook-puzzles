@@ -3,6 +3,7 @@ package brown.puzzles.breathalyzer;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt Brown
@@ -19,10 +20,8 @@ public class Main {
 		try{
 			List<String> words = readWords(args);
 
-			List<String> corpus = readCorpus();
-			
-			Scorer scorer = new DefaultScorer(corpus);
-			int result = scorer.score(words);
+			// int result = (new DefaultScorer()).score(readCorpus(), words);
+			int result = (new LengthAwareScorer()).score(readOrderedCorpus(), words);
 
 			System.out.print(result + "\n");
 		}
@@ -43,7 +42,15 @@ public class Main {
 		if (!corpusFile.exists()) {
 			corpusFile = new File("twl06.txt");
 		}
-		List<String> corpus = corpusParser.parseFile(corpusFile);
-		return corpus;
+		return corpusParser.parseFile(corpusFile);
+	}
+
+	public static Map<Integer, List<String>> readOrderedCorpus() throws IOException {
+		OrderedCorpusInputParser corpusParser = new OrderedCorpusInputParser();
+		File corpusFile = new File("/var/tmp/twl06.txt");
+		if (!corpusFile.exists()) {
+			corpusFile = new File("twl06.txt");
+		}
+		return corpusParser.parseFile(corpusFile);
 	}
 }

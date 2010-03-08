@@ -6,15 +6,9 @@ import java.util.List;
  * @author Matt Brown
  * @date Mar 7, 2010
  */
-public class DefaultScorer implements Scorer {
+public class DefaultScorer implements Scorer<List<String>> {
 
-	private final List<String> corpus;
-
-	public DefaultScorer(List<String> corpus) {
-		this.corpus = corpus;
-	}
-
-	public int score(List<String> words) {
+	public int score(List<String> corpus, List<String> words) {
 
 		int score = 0;
 		for (String word : words) {

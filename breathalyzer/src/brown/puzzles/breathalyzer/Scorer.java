@@ -6,7 +6,7 @@ import java.util.List;
  * @author Matt Brown
  * @date Mar 7, 2010
  */
-public interface Scorer {
+public interface Scorer<T> {
 
-	int score(List<String> words);
+	int score(T corpus, List<String> words);
 }
