@@ -17,10 +17,7 @@ public class Levenshtein {
 	 * @param t
 	 * @return
 	 */
-	public static int score(String a, String b) {
-
-		String s = a.toLowerCase();
-		String t = b.toLowerCase();
+	public static int score(String s, String t) {
 
 		final int m = s.length();
 		final int n = t.length();

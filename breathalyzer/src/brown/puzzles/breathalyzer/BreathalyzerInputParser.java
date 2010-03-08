@@ -34,7 +34,7 @@ public class BreathalyzerInputParser implements InputParser<List<String>> {
 				for (String s : sp) {
 					String t = s.trim();
 					if (t.length() > 0) {
-						words.add(t);
+						words.add(t.toLowerCase());
 					}
 				}
 			}

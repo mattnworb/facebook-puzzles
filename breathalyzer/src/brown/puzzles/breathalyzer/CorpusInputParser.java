@@ -31,7 +31,7 @@ public class CorpusInputParser implements InputParser<List<String>> {
 			String line = null;
 
 			while ((line = br.readLine()) != null) {
-				list.add(line);
+				list.add(line.toLowerCase());
 			}
 		}
 		finally {

@@ -40,7 +40,7 @@ public class OrderedCorpusInputParser implements InputParser<Map<Integer, List<S
 				if (!map.containsKey(len)) {
 					map.put(len, new ArrayList<String>());
 				}
-				map.get(len).add(line);
+				map.get(len).add(line.toLowerCase());
 			}
 		}
 		finally {
