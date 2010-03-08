@@ -20,7 +20,6 @@ public class DefaultScorer implements Scorer {
 		for (String word : words) {
 
 			int min = Integer.MAX_VALUE;
-			// String minWord = null;
 			for (String c : corpus) {
 				// Don't bother to calculate the score if the length of the two
 				// words is greater than min. In this case, the possible score
@@ -34,13 +33,11 @@ public class DefaultScorer implements Scorer {
 					int l = Levenshtein.score(word, c);
 					if (l < min) {
 						min = l;
-						// minWord = c;
 					}
 				}
 			}
 
 			score += min;
-			// Logger.log(word, minWord, min);
 
 		}
 		return score;
