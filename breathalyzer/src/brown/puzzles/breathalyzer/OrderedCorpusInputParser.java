@@ -2,9 +2,8 @@ package brown.puzzles.breathalyzer;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,7 @@ public class OrderedCorpusInputParser implements InputParser<Map<Integer, List<S
 		BufferedReader br = null;
 
 		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			br = new BufferedReader(new FileReader(file));
 
 			String line = null;
 
